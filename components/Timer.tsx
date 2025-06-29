@@ -2,6 +2,12 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 
+declare global {
+    interface Window {
+        __timerVolume: number;
+    }
+}
+
 // Timer component
 const Timer = () => {
     // State for input time (string or null)
@@ -53,17 +59,17 @@ const Timer = () => {
         if (storedVolume) {
             const parsedVolume = parseFloat(storedVolume);
             setVolume(parsedVolume);
-            (window as any).__timerVolume = parsedVolume;
+            window.__timerVolume = parsedVolume;
         } else {
             setVolume(1); // Default volume
-            (window as any).__timerVolume = 1;
+            window.__timerVolume = 1;
         }
     }, []);
 
     // Save volume to localStorage when it changes
     useEffect(() => {
         localStorage.setItem('timerVolume', String(volume));
-        (window as any).__timerVolume = volume;
+        window.__timerVolume = volume;
     }, [volume]);
 
     // Timer countdown effect
